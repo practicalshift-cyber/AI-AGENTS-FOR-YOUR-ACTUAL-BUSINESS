@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Resources â€” AI Agents for Your Actual Business</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #4f7fff;
+    --accent-dim: #2a3d6e;
+    --text: #e8eaf0;
+    --text-dim: #8892a4;
+    --code-bg: #141720;
+    --green: #3ecf8e;
+    --yellow: #f0c040;
+    --mono: 'Courier New', 'Consolas', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 40px 0 32px;
+    text-align: center;
+  }
+
+  .header-inner { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+  .book-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .tagline {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto 20px;
+  }
+
+  .notice {
+    display: inline-block;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+  }
+
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .nav-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .nav-inner a {
+    display: block;
+    padding: 14px 18px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .nav-inner a:hover {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-header:first-child { border-top: none; padding-top: 0; }
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .section-note {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .section-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 24px;
+    margin-top: -12px;
+  }
+
+  .snippet-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .snippet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .snippet-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .snippet-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .snippet-ref {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .snippet-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .lang-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: var(--bg);
+    padding: 3px 7px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  .copy-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s, background 0.15s;
+    font-family: var(--sans);
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover { opacity: 0.85; }
+  .copy-btn.copied { background: var(--green); }
+
+  .code-block {
+    background: var(--code-bg);
+    padding: 16px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: #c8d0e0;
+    white-space: pre;
+    tab-size: 2;
+  }
+
+  .divider { height: 40px; }
+
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 22px; }
+    .code-block { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="book-label">Companion Resources</div>
+    <h1>AI Agents for Your Actual Business</h1>
+    <p class="tagline">Every code snippet and prompt template from the book. Click Copy â€” don't retype JSON by hand.</p>
+    <span class="notice">Free companion to the book by Unnar Ã“lafsson</span>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#prompt-templates">Prompt Templates</a>
+    <a href="#code-snippets">Code Snippets</a>
+    <a href="#n8n-workflow">n8n Workflow</a>
+    <a href="#how-to-use">How to Use</a>
+  </div>
+</nav>
+
+<main>
+
+  <div class="divider"></div>
+
+  <div id="how-to-use" class="section-header" style="border-top:none;">
+    <h2>How to Use This Page</h2>
+  </div>
+  <p class="section-desc">
+    Each snippet below matches a chapter in the book. Click <strong>Copy</strong> on any block, paste it directly into your workflow or editor. For the n8n workflow JSON, copy the block, go to your n8n instance, click <em>Import from Clipboard</em> in the workflow menu. Change the lines marked <code style="background:var(--code-bg);padding:2px 5px;border-radius:3px;font-size:11px;"># CHANGE THIS</code> to your own values before running anything.
+  </p>
+
+  <div class="divider"></div>
+
+  <div id="prompt-templates" class="section-header">
+    <h2>Prompt Templates</h2>
+    <span class="section-note">Chapter 11</span>
+  </div>
+  <p class="section-desc">Five reusable structures. Copy, paste into your HTTP module, replace the bracketed placeholders with your specifics.</p>
+
+  
+    <div class="snippet-card" id="extraction">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Extraction</span>
+          <span class="snippet-ref">Pattern 1</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">text</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>You are a [role]. Extract information from the following [input type] and return ONLY a JSON object with no other text.
+
+Extract exactly these fields:
+- field_name_1: [what to look for] (return '[default value]' if not found)
+- field_name_2: [what to look for] (return '[default value]' if not found)
+
+Rules:
+- If a field cannot be determined, use the specified default value
+- Do not infer values not explicitly present
+- Return field names exactly as specified, using underscores
+- The first character of your response must be { and the last must be }
+
+[Input type] to analyze:
+---
+[INPUT VARIABLE]
+---
+
+Return only the JSON object.</code></pre>
+    </div>
+
+    <div class="snippet-card" id="classification">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Classification</span>
+          <span class="snippet-ref">Pattern 2</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">text</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>You are a [role]. Classify the following [input type] using the categories and rules below.
+
+CLASSIFICATION RULES:
+
+[CATEGORY NAME 1]:
+Definition: [precise definition]
+Examples: '[example 1]', '[example 2]', '[example 3]'
+When in doubt between this and [CATEGORY NAME 2]: [tiebreaker rule]
+
+[CATEGORY NAME 2]:
+Definition: [precise definition]
+Examples: '[example 1]', '[example 2]', '[example 3]'
+
+CONSTRAINTS:
+- Choose exactly one value from: [list all valid values]
+- If ambiguous, choose [default category]
+- Never invent a category not in the list
+
+[Input type]:
+---
+[INPUT VARIABLE]
+---
+
+Return ONLY a JSON object:
+{
+  &quot;classification&quot;: &quot;[chosen category]&quot;,
+  &quot;confidence&quot;: &quot;[high/medium/low]&quot;,
+  &quot;reason&quot;: &quot;[one sentence]&quot;
+}</code></pre>
+    </div>
+
+    <div class="snippet-card" id="summarization">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Summarization</span>
+          <span class="snippet-ref">Pattern 3</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">text</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>You are a [role]. Read the following [input type] and produce a summary according to the exact specifications below.
+
+SUMMARY SPECIFICATIONS:
+- Length: [word count or sentence count]
+- Format: [prose/bullet points/structured sections]
+- Audience: [who will read this summary]
+- Tone: [professional/conversational/technical]
+- Must include: [non-negotiable elements]
+- Must exclude: [things to leave out]
+
+QUALITY CHECKS:
+- Every sentence must add information not present in any other sentence
+- Do not begin with 'This document...' or 'The following...'
+- Do not use the word 'summary' in the summary
+
+[Input type]:
+---
+[INPUT VARIABLE]
+---
+
+Return only the summary text. No preamble. No explanation.</code></pre>
+    </div>
+
+    <div class="snippet-card" id="routing">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Routing</span>
+          <span class="snippet-ref">Pattern 4</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">text</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>You are a [role]. Read the following [input type] and determine the correct routing based on the rules below.
+
+ROUTING RULES:
+
+Route to [DESTINATION A] if:
+- [Condition 1]
+- [Condition 2]
+When in doubt between A and B: choose [DESTINATION X]
+
+Route to [DESTINATION B] if:
+- [Condition 1]
+- [Condition 2]
+
+CONSTRAINTS:
+- Choose exactly one destination
+- Valid destinations: [DESTINATION A], [DESTINATION B], [DESTINATION C]
+- If no rule clearly applies, route to [DEFAULT]
+
+[Input type]:
+---
+[INPUT VARIABLE]
+---
+
+Return ONLY a JSON object:
+{
+  &quot;destination&quot;: &quot;[chosen destination]&quot;,
+  &quot;reason&quot;: &quot;[one sentence]&quot;,
+  &quot;flags&quot;: &quot;[anything that makes this routing uncertain]&quot;
+}</code></pre>
+    </div>
+
+    <div class="snippet-card" id="drafting">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Drafting</span>
+          <span class="snippet-ref">Pattern 5</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">text</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>You are writing [content type] on behalf of [person/company].
+
+VOICE AND TONE:
+- Write as: [describe the voice]
+- Avoid: [specific things to never write]
+- Match this example: [paste a real example of writing you want to match]
+
+CONTENT REQUIREMENTS:
+- Purpose: [what this needs to accomplish]
+- Audience: [who will read it]
+- Key message: [the single most important takeaway]
+- Call to action: [exactly what you want the reader to do]
+
+FORMAT REQUIREMENTS:
+- Length: [specific word or character count]
+- Structure: [paragraphs/bullets/sections]
+- Opening: [how to start]
+- Closing: [how to end]
+
+QUALITY CHECKS:
+- Read the output out loud. If any sentence sounds like it was written by a committee, rewrite it.
+- Every sentence must either advance the argument or be deleted
+- Do not use: [list specific banned words or phrases]
+
+Context:
+---
+[CONTEXT VARIABLE]
+---
+
+Return only the written content. No explanation. No alternatives.</code></pre>
+    </div>
+
+  <div class="divider"></div>
+
+  <div id="code-snippets" class="section-header">
+    <h2>Code Snippets</h2>
+    <span class="section-note">Appendix A</span>
+  </div>
+  <p class="section-desc">Python snippets run from terminal or any Python environment. JavaScript snippets paste directly into an n8n Code node or Node.js script. Lines marked <strong># CHANGE THIS</strong> or <strong>// CHANGE THIS</strong> are the ones to edit.</p>
+
+  
+    <div class="snippet-card" id="claude_api_call__python">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Claude API Call â€” Python</span>
+          <span class="snippet-ref">Appendix A, Snippet 1</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">Python</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>import anthropic
+import json
+
+client = anthropic.Anthropic(api_key=&quot;your-api-key-here&quot;)  # CHANGE THIS
+
+message = client.messages.create(
+    model=&quot;claude-sonnet-4-6&quot;,
+    max_tokens=500,
+    messages=[
+        {
+            &quot;role&quot;: &quot;user&quot;,
+            &quot;content&quot;: &quot;Your prompt here&quot;  # CHANGE THIS
+        }
+    ]
+)
+
+print(message.content[0].text)</code></pre>
+    </div>
+
+    <div class="snippet-card" id="claude_api_call__javascript_node.js">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Claude API Call â€” JavaScript (Node.js)</span>
+          <span class="snippet-ref">Appendix A, Snippet 2</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">JavaScript</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>import Anthropic from &quot;@anthropic-ai/sdk&quot;;
+
+const client = new Anthropic({ apiKey: &quot;your-api-key-here&quot; }); // CHANGE THIS
+
+const message = await client.messages.create({
+  model: &quot;claude-sonnet-4-6&quot;,
+  max_tokens: 500,
+  messages: [
+    {
+      role: &quot;user&quot;,
+      content: &quot;Your prompt here&quot;, // CHANGE THIS
+    },
+  ],
+});
+
+console.log(message.content[0].text);</code></pre>
+    </div>
+
+    <div class="snippet-card" id="json_extractor__python">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">JSON Extractor â€” Python</span>
+          <span class="snippet-ref">Appendix A, Snippet 3</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">Python</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>def extract_json(claude_response_text):
+    text = claude_response_text
+    start = text.find('{')
+    end = text.rfind('}') + 1
+    if start == -1 or end == 0:
+        raise ValueError(&quot;No JSON object found in response&quot;)
+    json_string = text[start:end]
+    return json.loads(json_string)
+
+# Usage:
+raw_text = message.content[0].text
+parsed = extract_json(raw_text)</code></pre>
+    </div>
+
+    <div class="snippet-card" id="json_extractor__javascript_n8n_code_node">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">JSON Extractor â€” JavaScript (n8n Code Node)</span>
+          <span class="snippet-ref">Appendix A, Snippet 4</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">JavaScript</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>const text = $input.first().json.content[0].text;  // ADJUST PATH
+const start = text.indexOf('{');
+const end = text.lastIndexOf('}') + 1;
+if (start === -1 || end === 0) {
+  throw new Error('No JSON found in Claude response');
+}
+const jsonString = text.substring(start, end);
+const parsed = JSON.parse(jsonString);
+return [{ json: parsed }];</code></pre>
+    </div>
+
+    <div class="snippet-card" id="prospect_csv_researcher__python">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Prospect CSV Researcher â€” Python</span>
+          <span class="snippet-ref">Appendix A, Snippet 5</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">Python</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>import anthropic
+import csv
+import json
+import time
+
+client = anthropic.Anthropic(api_key=&quot;your-api-key-here&quot;)  # CHANGE THIS
+
+def research_prospect(company, why_relevant):
+    response = client.messages.create(
+        model=&quot;claude-sonnet-4-6&quot;,
+        max_tokens=400,
+        messages=[{
+            &quot;role&quot;: &quot;user&quot;,
+            &quot;content&quot;: f&quot;Research this prospect and return JSON.\
+\
+Company: {company}\
+Why we are reaching out: {why_relevant}\
+\
+Return ONLY: {{\
+  'best_hook': 'one sentence',\
+  'key_fact': 'one specific fact'\
+}}&quot;
+        }]
+    )
+    text = response.content[0].text
+    start = text.find('{')
+    end = text.rfind('}') + 1
+    return json.loads(text[start:end])
+
+with open('prospects.csv', 'r') as infile, open('prospects_researched.csv', 'w', newline='') as outfile:
+    reader = csv.DictReader(infile)
+    fieldnames = reader.fieldnames + ['best_hook', 'key_fact']
+    writer = csv.DictWriter(outfile, fieldnames=fieldnames)
+    writer.writeheader()
+    for row in reader:
+        print(f&quot;Processing: {row['Company']}&quot;)
+        try:
+            result = research_prospect(row['Company'], row['Why Relevant'])
+            row.update(result)
+            writer.writerow(row)
+            time.sleep(1)  # Rate limiting - do not remove
+        except Exception as e:
+            print(f&quot;Error on {row['Company']}: {e}&quot;)
+            row['best_hook'] = 'ERROR'
+            row['key_fact'] = str(e)
+            writer.writerow(row)</code></pre>
+    </div>
+
+    <div class="snippet-card" id="email_sanitizer__python">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Email Sanitizer â€” Python</span>
+          <span class="snippet-ref">Appendix A, Snippet 6</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">Python</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>import re
+import html
+
+def sanitize_email(raw_email):
+    clean = re.sub(r'&lt;[^&gt;]+&gt;', ' ', raw_email)  # Remove HTML tags
+    clean = html.unescape(clean)                 # Decode HTML entities
+    clean = re.sub(r'^[-=_]{3,}$', '', clean, flags=re.MULTILINE)
+    clean = re.sub(r'\
+{3,}', '\
+\
+', clean)
+    clean = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', clean)
+    return clean.strip()</code></pre>
+    </div>
+
+    <div class="snippet-card" id="email_sanitizer__javascript_n8n_code_node">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Email Sanitizer â€” JavaScript (n8n Code Node)</span>
+          <span class="snippet-ref">Appendix A, Snippet 7</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">JavaScript</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>function sanitizeEmail(rawEmail) {
+  return rawEmail
+    .replace(/&lt;[^&gt;]+&gt;/g, ' ')         // Remove HTML tags
+    .replace(/&amp;amp;/g, '&amp;')           // Decode HTML entities
+    .replace(/&amp;lt;/g, '&lt;')
+    .replace(/&amp;gt;/g, '&gt;')
+    .replace(/&amp;nbsp;/g, ' ')
+    .replace(/^[-=_]{3,}$/gm, '')     // Remove separator lines
+    .replace(/\
+{3,}/g, '\
+\
+')       // Collapse blank lines
+    .trim();
+}
+
+const rawEmail = $input.first().json['Text Content'];  // ADJUST FIELD NAME
+const cleanEmail = sanitizeEmail(rawEmail);
+return [{ json: { clean_email: cleanEmail } }];</code></pre>
+    </div>
+
+    <div class="snippet-card" id="webhook_tester__python">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Webhook Tester â€” Python</span>
+          <span class="snippet-ref">Appendix A, Snippet 8</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">Python</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>import requests
+import json
+
+# CHANGE THIS to your Make webhook URL
+webhook_url = &quot;https://hook.eu1.make.com/your-webhook-id-here&quot;
+
+# CHANGE THIS to match your expected data structure
+test_payload = {
+    &quot;lead_name&quot;: &quot;Test User&quot;,
+    &quot;company&quot;: &quot;Test Company Inc&quot;,
+    &quot;email_address&quot;: &quot;test@testcompany.com&quot;,
+    &quot;deal_size&quot;: &quot;$15,000&quot;,
+    &quot;what_they_want&quot;: &quot;Testing the webhook trigger&quot;,
+    &quot;urgency&quot;: &quot;Medium&quot;
+}
+
+response = requests.post(
+    webhook_url,
+    json=test_payload,
+    headers={&quot;Content-Type&quot;: &quot;application/json&quot;}
+)
+
+print(f&quot;Status: {response.status_code}&quot;)
+print(f&quot;Response: {response.text}&quot;)</code></pre>
+    </div>
+
+    <div class="snippet-card" id="airtable_query__python">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Airtable Query â€” Python</span>
+          <span class="snippet-ref">Appendix A, Snippet 9</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">Python</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>import requests
+
+AIRTABLE_TOKEN = &quot;your-airtable-personal-access-token&quot;  # CHANGE THIS
+BASE_ID = &quot;appXXXXXXXXXXXXXX&quot;                          # CHANGE THIS
+TABLE_NAME = &quot;Leads&quot;                                    # CHANGE THIS
+
+headers = {
+    &quot;Authorization&quot;: f&quot;Bearer {AIRTABLE_TOKEN}&quot;,
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+}
+
+params = {
+    &quot;filterByFormula&quot;: &quot;{Status} = 'New'&quot;,  # CHANGE FILTER AS NEEDED
+    &quot;maxRecords&quot;: 100
+}
+
+response = requests.get(
+    f&quot;https://api.airtable.com/v0/{BASE_ID}/{TABLE_NAME}&quot;,
+    headers=headers,
+    params=params
+)
+
+records = response.json()['records']
+print(f&quot;Found {len(records)} records&quot;)
+
+for record in records:
+    fields = record['fields']
+    print(f&quot;- {fields.get('Lead Name', 'Unknown')} from {fields.get('Company', 'Unknown')}&quot;)</code></pre>
+    </div>
+
+    <div class="snippet-card" id="token_cost_calculator__python">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">Token Cost Calculator â€” Python</span>
+          <span class="snippet-ref">Appendix A, Snippet 10</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">Python</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>import anthropic
+
+client = anthropic.Anthropic(api_key=&quot;your-api-key-here&quot;)  # CHANGE THIS
+
+response = client.messages.create(
+    model=&quot;claude-sonnet-4-6&quot;,
+    max_tokens=500,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Your prompt here&quot;}]
+)
+
+input_tokens = response.usage.input_tokens
+output_tokens = response.usage.output_tokens
+
+# Approximate costs (check console.anthropic.com for current pricing)
+input_cost = (input_tokens / 1_000_000) * 3.00    # $3 per million input tokens
+output_cost = (output_tokens / 1_000_000) * 15.00  # $15 per million output tokens
+total_cost = input_cost + output_cost
+
+print(f&quot;Input tokens: {input_tokens}&quot;)
+print(f&quot;Output tokens: {output_tokens}&quot;)
+print(f&quot;Estimated cost: ${total_cost:.4f}&quot;)</code></pre>
+    </div>
+
+    <div class="snippet-card" id="n8n_workflow_template_chapter_3__lead_router">
+      <div class="snippet-header">
+        <div class="snippet-meta">
+          <span class="snippet-title">n8n Workflow Template (Chapter 3 â€” Lead Router)</span>
+          <span class="snippet-ref">Appendix A, Snippet 11 Â· Import directly into n8n</span>
+        </div>
+        <div class="snippet-actions">
+          <span class="lang-badge">JSON</span>
+          <button class="copy-btn" onclick="copySnippet(this)">Copy</button>
+        </div>
+      </div>
+      <pre class="code-block"><code>{
+  &quot;name&quot;: &quot;Lead Router - Chapter 3&quot;,
+  &quot;nodes&quot;: [
+    {
+      &quot;name&quot;: &quot;Gmail Trigger&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.gmailTrigger&quot;,
+      &quot;parameters&quot;: {
+        &quot;pollTimes&quot;: {
+          &quot;item&quot;: [{&quot;mode&quot;: &quot;everyX&quot;, &quot;value&quot;: 15, &quot;unit&quot;: &quot;minutes&quot;}]
+        }
+      },
+      &quot;position&quot;: [250, 300]
+    },
+    {
+      &quot;name&quot;: &quot;Claude - Extract Lead Data&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.httpRequest&quot;,
+      &quot;parameters&quot;: {
+        &quot;method&quot;: &quot;POST&quot;,
+        &quot;url&quot;: &quot;https://api.anthropic.com/v1/messages&quot;
+      },
+      &quot;position&quot;: [450, 300]
+    },
+    {
+      &quot;name&quot;: &quot;Parse JSON&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.code&quot;,
+      &quot;parameters&quot;: {
+        &quot;jsCode&quot;: &quot;const text = $input.first().json.content[0].text; const start = text.indexOf('{'); const end = text.lastIndexOf('}') + 1; return [{ json: JSON.parse(text.substring(start, end)) }];&quot;
+      },
+      &quot;position&quot;: [650, 300]
+    },
+    {
+      &quot;name&quot;: &quot;Airtable - Create Record&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.airtable&quot;,
+      &quot;parameters&quot;: {
+        &quot;operation&quot;: &quot;create&quot;,
+        &quot;application&quot;: &quot;your-base-id-here&quot;,
+        &quot;table&quot;: &quot;Leads&quot;
+      },
+      &quot;position&quot;: [850, 300]
+    },
+    {
+      &quot;name&quot;: &quot;Slack - Notify&quot;,
+      &quot;type&quot;: &quot;n8n-nodes-base.slack&quot;,
+      &quot;parameters&quot;: {
+        &quot;operation&quot;: &quot;post&quot;,
+        &quot;channel&quot;: &quot;#new-leads&quot;
+      },
+      &quot;position&quot;: [1050, 300]
+    }
+  ]
+}</code></pre>
+    </div>
+
+  <div id="n8n-workflow"></div>
+
+</main>
+
+<footer>
+  <p>Companion to <em>AI Agents for Your Actual Business</em> by Unnar Ã“lafsson &mdash;
+  <a href="https://github.com/practicalshift-cyber/AI-AGENTS-FOR-YOUR-ACTUAL-BUSINESS">GitHub Repository</a></p>
+  <p style="margin-top:8px;font-size:11px;opacity:0.6;">Model strings in these snippets use claude-sonnet-4-6. Verify current recommended strings at console.anthropic.com before deploying to production.</p>
+</footer>
+
+<script>
+function copySnippet(btn) {
+  const code = btn.closest('.snippet-card').querySelector('code');
+  navigator.clipboard.writeText(code.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // Fallback for older browsers
+    const range = document.createRange();
+    range.selectNode(code);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
